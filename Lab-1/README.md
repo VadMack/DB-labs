@@ -345,8 +345,19 @@ ORDER BY w.payment;
 ### 7.	Определить: ###
 #### a)	фамилии и места проживания медперсонала, проведших более одного наложения гипса в день; ####
 ``` SQl
-
+SELECT m.last_name, m.adress
+FROM medpersonal m
+         JOIN work_activities wa on m.id = wa.medical_staff
+         JOIN types_of_operations too on too.id = wa.operation
+WHERE wa.quantity > 1
+  AND too.name = 'Наложение гипса';
 ```
+| last\_name | adress |
+| :--- | :--- |
+| Губанов | Выкса |
+| Бессонов | Выкса |
+
+
 #### b)	название операций, которые проводили врачи из Вознесенского или Выксы в больницах; ####
 ``` SQl
 
