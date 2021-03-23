@@ -360,12 +360,50 @@ WHERE wa.quantity > 1
 
 #### b)	название операций, которые проводили врачи из Вознесенского или Выксы в больницах; ####
 ``` SQl
-
+SELECT too.name
+FROM types_of_operations too
+         JOIN work_activities wa on too.id = wa.operation
+         JOIN medpersonal m on m.id = wa.medical_staff
+         JOIN place_of_work pow on pow.id = wa.workplace
+WHERE (m.adress = 'Выкса' OR m.adress = 'Вознесенское')
+  AND pow.facility = 'Больница';
 ```
+| name |
+| :--- |
+| УЗИ |
+| Наложение гипса |
+| Наложение гипса |
+| Инъекция алоэ |
+
 #### c)	названия и размер отчислений в местный бюджет для тех учреждений, где проводили операции те, у кого налог не менее 7%, но не более 16%. Включить в вывод фамилии таких людей и отсортировать по размеру отчислений и налогу; ####
 ``` SQl
-
+SELECT pow.facility, pow.local_budget_allocations, m.last_name
+FROM types_of_operations too
+         JOIN work_activities wa on too.id = wa.operation
+         JOIN medpersonal m on m.id = wa.medical_staff
+         JOIN place_of_work pow on pow.id = wa.workplace
+WHERE m.tax >= 7
+  AND m.tax <= 16
+ORDER BY pow.local_budget_allocations, m.tax;
 ```
+
+| facility | local\_budget\_allocations | last\_name |
+| :--- | :--- | :--- |
+| Травм.пункт | 3 | Бессонов |
+| Травм.пункт | 3 | Бессонов |
+| Травм. пункт | 3 | Бессонов |
+| Травм.пункт | 3 | Бессонов |
+| Травм.пункт | 3 | Губанов |
+| Травм.пункт | 3 | Губанов |
+| Травм. пункт | 3 | Севастьянов |
+| Больница | 4 | Бессонов |
+| Больница | 4 | Бессонов |
+| Больница | 4 | Губанов |
+| Больница | 4 | Губанов |
+| Районная больница | 10 | Медина |
+| Род. дом | 12 | Губанов |
+| Род. дом | 12 | Севастьянов |
+
 #### d)	даты, идентификаторы операций и фамилии тех, кто проводил операции стоимостью не менее 7000руб больше одного раза. ####
 ``` SQl
 
