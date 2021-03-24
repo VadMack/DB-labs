@@ -434,15 +434,38 @@ WHERE too.cost >= 7000
 ```
 	
 
-###10.	Используя операцию IN (NOT IN)  реализовать следующие запросы: ###
+### 10.	Используя операцию IN (NOT IN)  реализовать следующие запросы: ###
 #### a)	найти фамилии медперсонала из Навашино, проводивших инъекции в Выксе; ####
 ``` SQl
-
+SELECT m.last_name
+FROM medpersonal m
+WHERE m.id IN (
+    SELECT wa.medical_staff
+    FROM work_activities wa
+             JOIN types_of_operations too on too.id = wa.operation
+    WHERE too.name LIKE '%Инъекция%'
+      AND too.stronghold = 'Выкса'
+)
+  AND m.adress = 'Навашино';
 ```
+Инъекции в Выксе не делают =)
+
 #### b)	найти те операции, которые не проводились до среды; ####
 ``` SQl
-
+SELECT too.name
+FROM types_of_operations too
+WHERE too.id NOT IN (
+    SELECT wa.operation
+    FROM work_activities wa
+    WHERE wa.date IN ('Понедельник', 'Вторник')
+);
 ```
+| name |
+| :--- |
+| Блокада |
+| Инъекция поливитаминов |
+| ЭКГ |
+
 #### c)	запросы задания 7.с и 7.d. ####
 ``` SQl
 
