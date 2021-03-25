@@ -625,13 +625,39 @@ WHERE m.id = ANY (
 
 ### 12.	Используя операцию UNION получить места проживания медпероснала и опероные пункты для операций. ###
 ``` SQl
-
+SELECT adress
+FROM medpersonal
+UNION
+SELECT stronghold
+FROM types_of_operations;
 ```
+
+| adress |
+| :--- |
+| Вознесенское |
+| Навашино |
+| Выкса |
+| Починки |
+
 ### 13.	Используя операцию EXISTS ( NOT EXISTS ) реализовать нижеследующие запросы. В случае, если для текущего состояния БД запрос будет выдавать пустое множество строк, требуется указать какие добавления в БД необходимо провести. ###
 #### a)	определить тот медперсонал, который не работал в субботу; ####
 ``` SQl
-
+SELECT m.last_name
+FROM medpersonal m
+WHERE NOT EXISTS(
+        SELECT *
+        FROM work_activities wa
+                 join medpersonal m2 on m2.id = wa.medical_staff
+        WHERE wa.date = 'Суббота'
+          AND m.id = m2.id
+    );
 ```
+
+| last\_name |
+| :--- |
+| Медина |
+| Севастьянов |
+
 #### b)	найти такие операции, которые проводились всеми врачами в Выксе; ####
 ``` SQl
 
