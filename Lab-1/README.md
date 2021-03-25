@@ -515,15 +515,15 @@ FROM types_of_operations too
          JOIN work_activities wa on too.id = wa.operation
          JOIN medpersonal m on m.id = wa.medical_staff
          JOIN place_of_work pow on pow.id = wa.workplace
-WHERE m.tax IN (7, 8, 9, 10, 11, 12, 13, 14, 15)
+WHERE m.tax IN (7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
 GROUP BY facility, last_name, local_budget_allocations, m.tax
 ORDER BY pow.local_budget_allocations, m.tax;
 ```
 | facility | local\_budget\_allocations | last\_name |
 | :--- | :--- | :--- |
 | Травм.пункт | 3 | Бессонов |
-| Травм. пункт | 3 | Бессонов |
 | Травм.пункт | 3 | Губанов |
+| Травм. пункт | 3 | Бессонов |
 | Травм. пункт | 3 | Севастьянов |
 | Больница | 4 | Бессонов |
 | Больница | 4 | Губанов |
