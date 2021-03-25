@@ -473,12 +473,38 @@ WHERE too.id NOT IN (
 ### 11.	Используя операции ALL-ANY реализовать следующие запросы: ###
 #### a)	найти среди больниц ту, которая имеет наименьший процент отчислений; ####
 ``` SQl
-
+SELECT pow.facility, pow.adress
+FROM place_of_work pow
+WHERE local_budget_allocations <= ALL (
+    SELECT pow.local_budget_allocations
+    FROM place_of_work pow
+    WHERE pow.facility LIKE 'Больница'
+)
+  AND pow.facility LIKE 'Больница';
 ```
+| facility | adress |
+| :--- | :--- |
+| Больница | Навашино |
+| Больница | Починки |
+
+У больниц одинаковый процент.
+
 #### b)	найти педперсонал, проводивший операции с самой малой суммой оплаты; ####
 ``` SQl
-
+SELECT m.last_name, wa.payment
+FROM medpersonal m
+JOIN work_activities wa on m.id = wa.medical_staff
+WHERE wa.payment <= ALL (
+    SELECT wa.payment
+    FROM work_activities wa
+);
 ```
+
+| last\_name | payment |
+| :--- | :--- |
+| Севастьянов | 10000 |
+| Бессонов | 10000 |
+
 #### c)	найти цену самой дорогой операции, проведенной в четверг или пятницу; ####
 ``` SQl
 
