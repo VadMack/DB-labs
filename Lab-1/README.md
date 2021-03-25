@@ -510,8 +510,48 @@ WHERE too.id NOT IN (
 
 #### c)	запросы задания 7.с и 7.d. ####
 ``` SQl
-
+SELECT pow.facility, pow.local_budget_allocations, m.last_name
+FROM types_of_operations too
+         JOIN work_activities wa on too.id = wa.operation
+         JOIN medpersonal m on m.id = wa.medical_staff
+         JOIN place_of_work pow on pow.id = wa.workplace
+WHERE m.tax IN (7, 8, 9, 10, 11, 12, 13, 14, 15)
+GROUP BY facility, last_name, local_budget_allocations, m.tax
+ORDER BY pow.local_budget_allocations, m.tax;
 ```
+| facility | local\_budget\_allocations | last\_name |
+| :--- | :--- | :--- |
+| Травм.пункт | 3 | Бессонов |
+| Травм. пункт | 3 | Бессонов |
+| Травм.пункт | 3 | Губанов |
+| Травм. пункт | 3 | Севастьянов |
+| Больница | 4 | Бессонов |
+| Больница | 4 | Губанов |
+| Районная больница | 10 | Медина |
+| Род. дом | 12 | Губанов |
+| Род. дом | 12 | Севастьянов |
+
+```SQL
+SELECT wa.date, too.id, m.last_name
+FROM work_activities wa
+         JOIN medpersonal m on m.id = wa.medical_staff
+         JOIN types_of_operations too on too.id = wa.operation
+WHERE too.cost >= 7000
+  AND wa.quantity NOT IN (0, 1);
+```
+
+| date | id | last\_name |
+| :--- | :--- | :--- |
+| Понедельник | 1 | Губанов |
+| Пятница | 1 | Бессонов |
+| Четверг | 3 | Боева |
+| Суббота | 3 | Бессонов |
+| Понедельник | 4 | Губанов |
+| Четверг | 4 | Бессонов |
+| Пятница | 4 | Бессонов |
+| Суббота | 4 | Боева |
+| Среда | 5 | Севастьянов |
+
 ### 11.	Используя операции ALL-ANY реализовать следующие запросы: ###
 #### a)	найти среди больниц ту, которая имеет наименьший процент отчислений; ####
 ``` SQl
