@@ -460,7 +460,7 @@ UPDATE types_of_operations too
     JOIN work_activities wa on too.id = wa.operation
     JOIN place_of_work pow on pow.id = wa.workplace
 SET too.allocations_amount = too.cost * (pow.local_budget_allocations / 100)
-WHERE too.id = wa.operation -- Без этого бросало ошибку Unsafe operation ¯\_(ツ)_/¯
+WHERE too.id = wa.operation -- Без этого бросало ошибку Unsafe query ¯\_(ツ)_/¯
   AND pow.id = wa.workplace;
   
 SELECT name, cost, types_of_operations.allocations_amount
@@ -549,12 +549,40 @@ WHERE wa.payment <= ALL (
 
 #### c)	найти цену самой дорогой операции, проведенной в четверг или пятницу; ####
 ``` SQl
-
+SELECT too.name, too.cost
+FROM types_of_operations too
+         JOIN work_activities wa on too.id = wa.operation
+WHERE wa.date IN ('Четверг', 'Пятница')
+  AND too.cost >= ALL (
+    SELECT too.cost
+    FROM types_of_operations too
+             JOIN work_activities wa on too.id = wa.operation
+    WHERE wa.date IN ('Четверг', 'Пятница')
+);
 ```
+| name | cost |
+| :--- | :--- |
+| Наложение гипса | 18000 |
+
 #### d)	запрос задания 7.а. ####
 ``` SQl
-
+SELECT m.last_name, m.adress
+FROM medpersonal m
+WHERE m.id = ANY (
+    SELECT wa.medical_staff
+    FROM work_activities wa
+             JOIN types_of_operations too on too.id = wa.operation
+    WHERE wa.quantity > 1
+      AND too.name = 'Наложение гипса'
+    GROUP BY wa.medical_staff
+)
 ```
+
+| last\_name | adress |
+| :--- | :--- |
+| Бессонов | Выкса |
+| Губанов | Выкса |
+
 ### 12.	Используя операцию UNION получить места проживания медпероснала и опероные пункты для операций. ###
 ``` SQl
 
