@@ -426,13 +426,55 @@ WHERE too.cost >= 7000
 
 ### 8.	Создать запрос для модификации всех значений столбца с суммарной величиной оплаты, чтобы он содержал истинную сумму, получаемую медперсоналом ( за вычетом налога). Вывести новые значения. ###
 ``` SQl
+UPDATE work_activities wa
+    JOIN medpersonal m on m.id = wa.medical_staff
+SET wa.payment = wa.payment * (1 - (m.tax / 100));
 
+SELECT wa.contract, wa.payment
+FROM work_activities wa;
 ```
+
+| contract | payment |
+| :--- | :--- |
+| 51040 | 17200 |
+| 51041 | 27000 |
+| 51042 | 29700 |
+| 51043 | 32400 |
+| 51044 | 27000 |
+| 51045 | 25800 |
+| 51046 | 39600 |
+| 51047 | 25200 |
+| 51048 | 41800 |
+| 51049 | 8600 |
+| 51050 | 19800 |
+| 51051 | 32400 |
+| 51052 | 13300 |
+| 51053 | 9000 |
+| 51054 | 9900 |
+| 51055 | 20900 |
+| 51056 | 19800 |
+
 ### 9.	Расширить таблицу с данными об операциях столбцом, содержащим величину отчислений в местный бюджет для мед.учреждения, где проводилась операция. Создать запрос для ввода конкретных значений во все строки таблицы операций. ###
 ``` SQl
-
+UPDATE types_of_operations too
+    JOIN work_activities wa on too.id = wa.operation
+    JOIN place_of_work pow on pow.id = wa.workplace
+SET too.allocations_amount = too.cost * (pow.local_budget_allocations / 100)
+WHERE too.id = wa.operation -- Без этого бросало ошибку Unsafe operation ¯\_(ツ)_/¯
+  AND pow.id = wa.workplace;
+  
+SELECT name, cost, types_of_operations.allocations_amount
+FROM types_of_operations;
 ```
-	
+| name | cost | allocations\_amount |
+| :--- | :--- | :--- |
+| Наложение гипса | 18000 | 720 |
+| Блокада | 14000 | 560 |
+| Инъекция поливитаминов | 11000 | 440 |
+| Инъекция алоэ | 11000 | 440 |
+| ЭКГ | 10000 | 300 |
+| УЗИ | 30000 | 1200 |
+| Флюорография | 5000 | 500 |
 
 ### 10.	Используя операцию IN (NOT IN)  реализовать следующие запросы: ###
 #### a)	найти фамилии медперсонала из Навашино, проводивших инъекции в Выксе; ####
