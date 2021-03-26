@@ -708,8 +708,35 @@ WHERE NOT EXISTS
 
 #### d)	определить места работы, где работали все врачи из чужих населенных пунктов. ####
 ``` SQl
-
+SELECT pow.facility, pow.adress as facility_adress, m.adress as person_adress
+FROM place_of_work pow
+         JOIN work_activities wa on pow.id = wa.workplace
+         JOIN medpersonal m on m.id = wa.medical_staff
+WHERE EXISTS
+          (
+              SELECT pow.facility, m.adress
+              FROM place_of_work pow2
+                       JOIN work_activities wa on pow2.id = wa.workplace
+                       JOIN medpersonal m on m.id = wa.medical_staff
+              WHERE pow.facility != m.adress
+                AND pow.facility = pow2.facility
+          )
+GROUP BY pow.facility, facility_adress, person_adress;
 ```
+
+| facility | facility\_adress | person\_adress |
+| :--- | :--- | :--- |
+| Районная больница | Вознесенское | Вознесенское |
+| Травм. пункт | Выкса | Навашино |
+| Травм. пункт | Выкса | Выкса |
+| Больница | Навашино | Выкса |
+| Больница | Навашино | Починки |
+| Род. дом | Вознесенское | Выкса |
+| Род. дом | Вознесенское | Навашино |
+| Больница | Починки | Выкса |
+| Больница | Починки | Починки |
+| Травм.пункт | Лукояново | Выкса |
+
 ### 14.	Реализовать запросы с использованием аггрегатных функций: ###
 #### a)	найти число различных мест работы для медперсонала, работавшего в мед.учреждениях Выксы; ####
 ``` SQl
@@ -717,8 +744,21 @@ WHERE NOT EXISTS
 ```
 #### b)	определить средний размер налога для медперсонала, производившего иньекции; ####
 ``` SQl
-
+SELECT AVG(lnt.tax)
+FROM (
+         SELECT m.last_name, m.tax -- AVG(m.tax)
+         FROM medpersonal m
+                  JOIN work_activities wa on m.id = wa.medical_staff
+                  JOIN types_of_operations too on too.id = wa.operation
+         WHERE too.name LIKE '%Инъекция%'
+         GROUP BY m.last_name, m.tax
+     ) as lnt
 ```
+
+| AVG\(lnt.tax\) |
+| :--- |
+| 8.3333 |
+
 #### c)	кто из медперсонала делал операцию с минимальной стоимостью; ####
 ``` SQl
 
