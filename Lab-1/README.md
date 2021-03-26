@@ -660,12 +660,52 @@ WHERE NOT EXISTS(
 
 #### b)	найти такие операции, которые проводились всеми врачами в Выксе; ####
 ``` SQl
-
+SELECT too.name, m.last_name, pow.adress
+FROM types_of_operations too
+         JOIN work_activities wa on too.id = wa.operation
+         JOIN place_of_work pow on pow.id = wa.workplace
+         JOIN medpersonal m on m.id = wa.medical_staff
+WHERE EXISTS(
+              SELECT *
+              FROM work_activities wa
+                       JOIN types_of_operations too on too.id = wa.operation
+                       JOIN place_of_work pow2 on pow2.id = wa.workplace
+                       JOIN medpersonal m2 on m2.id = wa.medical_staff
+              WHERE pow.adress = 'Выкса'
+                AND m2.last_name = m.last_name
+          )
 ```
+
+| name | last\_name | adress |
+| :--- | :--- | :--- |
+| ЭКГ | Севастьянов | Выкса |
+| Флюорография | Бессонов | Выкса |
+
 #### c)	определить те места работы, где не делали УЗИ более раза; ####
 ``` SQl
-
+SELECT pow.adress
+FROM place_of_work pow
+WHERE NOT EXISTS
+    (
+        SELECT *
+        FROM work_activities wa
+                 JOIN place_of_work pow2 on wa.workplace = pow2.id
+                 JOIN types_of_operations too on wa.operation = too.id
+        WHERE wa.quantity > 1
+          AND too.name = 'УЗИ'
+          AND pow2.adress = pow.adress
+    );
 ```
+
+| adress |
+| :--- |
+| Вознесенское |
+| Выкса |
+| Навашино |
+| Вознесенское |
+| Починки |
+| Лукояново |
+
 #### d)	определить места работы, где работали все врачи из чужих населенных пунктов. ####
 ``` SQl
 
