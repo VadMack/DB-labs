@@ -761,8 +761,22 @@ FROM (
 
 #### c)	кто из медперсонала делал операцию с минимальной стоимостью; ####
 ``` SQl
-
+SELECT m.last_name
+FROM work_activities wa
+         JOIN types_of_operations too on too.id = wa.operation
+         JOIN medpersonal m on m.id = wa.medical_staff
+WHERE too.cost = (
+    SELECT MIN(too2.cost)
+    FROM work_activities wa
+             JOIN types_of_operations too2 on too2.id = wa.operation
+);
 ```
+| last\_name |
+| :--- |
+| Медина |
+| Бессонов |
+
+
 #### d)	определить количество операций стоимостью не более 15000, проведенных в понедельник Губановым . ####
 ``` SQl
 
