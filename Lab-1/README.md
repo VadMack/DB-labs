@@ -810,18 +810,79 @@ WHERE too.cost <= 15000
 ### 15.	Используя средства группировки реализовать следующие запросы: ###
 #### a)	определить для каждого дня недели и каждой операции сколько раз ее проводили; ####
 ``` SQl
-
+SELECT wa.date, too.name, wa.quantity
+FROM work_activities wa
+         JOIN types_of_operations too on too.id = wa.operation
+GROUP BY wa.date, too.name, wa.quantity
+ORDER BY date;
 ```
+| date | name | quantity |
+| :--- | :--- | :--- |
+| Понедельник | Инъекция алоэ | 3 |
+| Понедельник | Наложение гипса | 2 |
+| Понедельник | УЗИ | 1 |
+| Понедельник | Флюорография | 4 |
+| Пятница | Блокада | 1 |
+| Пятница | Инъекция алоэ | 2 |
+| Пятница | Наложение гипса | 2 |
+| Пятница | ЭКГ | 1 |
+| Среда | ЭКГ | 3 |
+| Суббота | Инъекция алоэ | 1 |
+| Суббота | Инъекция алоэ | 2 |
+| Суббота | Инъекция поливитаминов | 2 |
+| Суббота | Флюорография | 2 |
+| Четверг | Блокада | 1 |
+| Четверг | Инъекция алоэ | 4 |
+| Четверг | Инъекция поливитаминов | 4 |
+
 #### b)	найти для каждого медработника среднюю стоимость всех проведенных им операций; ####
 ``` SQl
-
+SELECT m.last_name, SUM(too.cost) / SUM(wa.quantity) as average
+FROM work_activities wa
+         JOIN medpersonal m on m.id = wa.medical_staff
+         JOIN types_of_operations too on too.id = wa.operation
+GROUP BY m.last_name;
 ```
+| last\_name | average |
+| :--- | :--- |
+| Медина | 1250.0000 |
+| Севастьянов | 5000.0000 |
+| Бессонов | 6615.3846 |
+| Губанов | 10500.0000 |
+| Боева | 5142.8571 |
+
 #### c)	определить те мед.учреждения, где суммарная величина стоимости всех проведенных в них операций была более 30000; ####
 ``` SQl
-
+SELECT pow.facility, pow.adress, wSS.sum
+FROM (
+         SELECT wa.workplace, SUM(too.cost) * SUM(wa.quantity) as sum
+         FROM work_activities wa
+                  JOIN types_of_operations too on too.id = wa.operation
+         GROUP BY wa.workplace
+     ) as wSS
+         JOIN place_of_work pow on pow.id = wSS.workplace
+WHERE wSS.sum > 30000
+ORDER BY wSS.sum;
 ```
+| facility | adress | sum |
+| :--- | :--- | :--- |
+| Травм. пункт | Выкса | 75000 |
+| Род. дом | Вознесенское | 80000 |
+| Больница | Починки | 116000 |
+| Травм.пункт | Лукояново | 580000 |
+| Больница | Навашино | 924000 |
+
 #### d)	для каждого дня недели найти число проведенных в этот день операций. ####
 ``` SQl
-
+SELECT date, SUM(quantity)
+FROM work_activities
+GROUP BY date;
 ```
 
+| date | SUM\(quantity\) |
+| :--- | :--- |
+| Понедельник | 11 |
+| Среда | 3 |
+| Четверг | 9 |
+| Пятница | 6 |
+| Суббота | 7 |
