@@ -740,8 +740,24 @@ GROUP BY pow.facility, facility_adress, person_adress;
 ### 14.	Реализовать запросы с использованием аггрегатных функций: ###
 #### a)	найти число различных мест работы для медперсонала, работавшего в мед.учреждениях Выксы; ####
 ``` SQl
-
+SELECT COUNT(*)
+FROM (
+         SELECT DISTINCT pow.facility, pow.adress
+         FROM work_activities wa
+                  JOIN place_of_work pow on pow.id = wa.workplace
+         WHERE wa.medical_staff IN
+               (
+                   SELECT medical_staff
+                   FROM work_activities wa2
+                            JOIN place_of_work pow2 on pow2.id = wa2.workplace
+                   WHERE pow2.adress = 'Выкса'
+               )
+     ) as fa;
 ```
+| COUNT\(\*\) |
+| :--- |
+| 4 |
+
 #### b)	определить средний размер налога для медперсонала, производившего иньекции; ####
 ``` SQl
 SELECT AVG(lnt.tax)
@@ -779,8 +795,18 @@ WHERE too.cost = (
 
 #### d)	определить количество операций стоимостью не более 15000, проведенных в понедельник Губановым . ####
 ``` SQl
-
+SELECT COUNT(*)
+FROM work_activities wa
+         JOIN medpersonal m on m.id = wa.medical_staff
+         JOIN types_of_operations too on too.id = wa.operation
+WHERE too.cost <= 15000
+  AND m.last_name = 'Губанов'
+  AND wa.date = 'Понедельник';
 ```
+| COUNT\(\*\) |
+| :--- |
+| 1 |
+
 ### 15.	Используя средства группировки реализовать следующие запросы: ###
 #### a)	определить для каждого дня недели и каждой операции сколько раз ее проводили; ####
 ``` SQl
