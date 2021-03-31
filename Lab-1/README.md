@@ -378,29 +378,27 @@ GROUP BY too.name;
 
 #### c)	названия и размер отчислений в местный бюджет для тех учреждений, где проводили операции те, у кого налог не менее 7%, но не более 16%. Включить в вывод фамилии таких людей и отсортировать по размеру отчислений и налогу; ####
 ``` SQl
-SELECT pow.facility, pow.local_budget_allocations, m.last_name
+SELECT DISTINCT pow.facility, pow.local_budget_allocations, m.last_name, m.tax
 FROM types_of_operations too
          JOIN work_activities wa on too.id = wa.operation
          JOIN medpersonal m on m.id = wa.medical_staff
          JOIN place_of_work pow on pow.id = wa.workplace
 WHERE m.tax >= 7
   AND m.tax <= 16
-GROUP BY facility, last_name, local_budget_allocations, m.tax
 ORDER BY pow.local_budget_allocations, m.tax;
 ```
 
-| facility | local\_budget\_allocations | last\_name |
-| :--- | :--- | :--- |
-| Травм.пункт | 3 | Бессонов |
-| Травм. пункт | 3 | Бессонов |
-| Травм.пункт | 3 | Губанов |
-| Травм. пункт | 3 | Севастьянов |
-| Больница | 4 | Бессонов |
-| Больница | 4 | Губанов |
-| Районная больница | 10 | Медина |
-| Род. дом | 12 | Губанов |
-| Род. дом | 12 | Севастьянов |
-
+| facility | local\_budget\_allocations | last\_name | tax |
+| :--- | :--- | :--- | :--- |
+| Травм.пункт | 3 | Бессонов | 10 |
+| Травм. пункт | 3 | Бессонов | 10 |
+| Травм.пункт | 3 | Губанов | 10 |
+| Травм. пункт | 3 | Севастьянов | 14 |
+| Больница | 4 | Бессонов | 10 |
+| Больница | 4 | Губанов | 10 |
+| Районная больница | 10 | Медина | 14 |
+| Род. дом | 12 | Губанов | 10 |
+| Род. дом | 12 | Севастьянов | 14 |
 
 #### d)	даты, идентификаторы операций и фамилии тех, кто проводил операции стоимостью не менее 7000руб больше одного раза. ####
 ``` SQl
@@ -510,26 +508,27 @@ WHERE too.id NOT IN (
 
 #### c)	запросы задания 7.с и 7.d. ####
 ``` SQl
-SELECT pow.facility, pow.local_budget_allocations, m.last_name
+SELECT DISTINCT pow.facility, pow.adress, pow.local_budget_allocations, m.last_name, m.tax
 FROM types_of_operations too
          JOIN work_activities wa on too.id = wa.operation
          JOIN medpersonal m on m.id = wa.medical_staff
          JOIN place_of_work pow on pow.id = wa.workplace
 WHERE m.tax IN (7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
-GROUP BY facility, last_name, local_budget_allocations, m.tax
 ORDER BY pow.local_budget_allocations, m.tax;
 ```
-| facility | local\_budget\_allocations | last\_name |
-| :--- | :--- | :--- |
-| Травм.пункт | 3 | Бессонов |
-| Травм.пункт | 3 | Губанов |
-| Травм. пункт | 3 | Бессонов |
-| Травм. пункт | 3 | Севастьянов |
-| Больница | 4 | Бессонов |
-| Больница | 4 | Губанов |
-| Районная больница | 10 | Медина |
-| Род. дом | 12 | Губанов |
-| Род. дом | 12 | Севастьянов |
+| facility | adress | local\_budget\_allocations | last\_name | tax |
+| :--- | :--- | :--- | :--- | :--- |
+| Травм.пункт | Лукояново | 3 | Бессонов | 10 |
+| Травм. пункт | Выкса | 3 | Бессонов | 10 |
+| Травм.пункт | Лукояново | 3 | Губанов | 10 |
+| Травм. пункт | Выкса | 3 | Севастьянов | 14 |
+| Больница | Навашино | 4 | Бессонов | 10 |
+| Больница | Навашино | 4 | Губанов | 10 |
+| Больница | Починки | 4 | Губанов | 10 |
+| Районная больница | Вознесенское | 10 | Медина | 14 |
+| Род. дом | Вознесенское | 12 | Губанов | 10 |
+| Род. дом | Вознесенское | 12 | Севастьянов | 14 |
+
 
 ```SQL
 SELECT wa.date, too.id, m.last_name
@@ -609,13 +608,12 @@ WHERE wa.date IN ('Четверг', 'Пятница')
 SELECT m.last_name, m.adress
 FROM medpersonal m
 WHERE m.id = ANY (
-    SELECT wa.medical_staff
+    SELECT DISTINCT wa.medical_staff
     FROM work_activities wa
              JOIN types_of_operations too on too.id = wa.operation
     WHERE wa.quantity > 1
       AND too.name = 'Наложение гипса'
-    GROUP BY wa.medical_staff
-)
+);
 ```
 
 | last\_name | adress |
@@ -760,18 +758,16 @@ FROM (
 
 #### b)	определить средний размер налога для медперсонала, производившего иньекции; ####
 ``` SQl
-SELECT AVG(lnt.tax)
+SELECT AVG(lnt.tax) as average_tax
 FROM (
-         SELECT m.last_name, m.tax -- AVG(m.tax)
+         SELECT DISTINCT m.last_name, m.tax
          FROM medpersonal m
                   JOIN work_activities wa on m.id = wa.medical_staff
                   JOIN types_of_operations too on too.id = wa.operation
          WHERE too.name LIKE '%Инъекция%'
-         GROUP BY m.last_name, m.tax
-     ) as lnt
+     ) as lnt;
 ```
-
-| AVG\(lnt.tax\) |
+| average\_tax |
 | :--- |
 | 8.3333 |
 
