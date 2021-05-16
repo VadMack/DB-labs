@@ -30,3 +30,75 @@ CREATE USER 'admin'@'localhost' IDENTIFIED BY 'admin';
 GRANT ALL PRIVILEGES ON * . * TO 'admin'@'localhost';
 ```
 
+Создание таблиц:
+
+``` SQL
+CREATE TABLE clubs
+(
+    id           INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name         VARCHAR(255),
+    city_name    VARCHAR(255),
+    salary_costs INT UNSIGNED
+);
+
+CREATE TABLE players
+(
+    id         INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(255),
+    last_name  VARCHAR(255),
+    club_id    INT UNSIGNED,
+    salary     INT UNSIGNED NOT NULL DEFAULT 0,
+    FOREIGN KEY (club_id) REFERENCES clubs (id)
+);
+```
+
+1НФ:
+- в любом допустимом значении отношения каждый кортеж содержит только одно значение для каждого из атрибутов.
+2НФ:
+- каждый неключевой атрибут неприводимо (функционально полно) зависит от потенциального ключа.
+3НФ:
+- отсутствуют транзитивные функциональные зависимости неключевых атрибутов от ключевых
+
+
+Триггеры:
+
+``` SQL
+CREATE TRIGGER TRG_insert
+    AFTER INSERT
+    ON players
+    FOR EACH ROW
+BEGIN
+    UPDATE clubs
+    SET salary_costs=(SELECT SUM(salary)
+                      FROM players
+                      GROUP BY club_id)
+    where clubs.id = NEW.club_id;
+END;
+
+CREATE TRIGGER TRG_update
+    AFTER UPDATE
+    ON players
+    FOR EACH ROW
+BEGIN
+    UPDATE clubs
+    SET salary_costs=(SELECT SUM(salary)
+                      FROM players
+                      GROUP BY club_id)
+    where clubs.id = NEW.club_id;
+END;
+
+CREATE TRIGGER TRG_delete
+    AFTER DELETE
+    ON players
+    FOR EACH ROW
+BEGIN
+    UPDATE clubs
+    SET salary_costs=(SELECT SUM(salary)
+                      FROM players
+                      GROUP BY club_id)
+    where clubs.id = OLD.club_id;
+END;
+```
+
+
+
