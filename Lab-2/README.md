@@ -100,5 +100,11 @@ BEGIN
 END;
 ```
 
+Создание индекса: 
+
+```SQL
+CREATE INDEX IND_last_name ON players (last_name);
+```
+
 
 
