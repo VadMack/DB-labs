@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="TablesViewController">
+   <children>
+      <SplitPane dividerPositions="0.5" layoutX="200.0" layoutY="29.0" prefHeight="325.0" prefWidth="600.0" AnchorPane.bottomAnchor="46.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="29.0">
+         <items>
+            <ScrollPane prefHeight="200.0" prefWidth="200.0">
+              <content>
+                  <TableView fx:id="players" prefHeight="310.0" prefWidth="295.0">
+                    <columns>
+                      <TableColumn fx:id="playerid" prefWidth="75.0" text="ID" />
+                      <TableColumn fx:id="playername" prefWidth="75.0" text="NAME" />
+                        <TableColumn fx:id="playerlname" prefWidth="75.0" text="LAST NAME" />
+                        <TableColumn fx:id="playerclubid" prefWidth="75.0" text="CLUB ID" />
+                        <TableColumn fx:id="playersalary" prefWidth="75.0" text="SALARY" />
+                    </columns>
+                  </TableView>
+              </content>
+            </ScrollPane>
+            <ScrollPane prefHeight="200.0" prefWidth="200.0">
+              <content>
+                  <TableView fx:id="clubs" prefHeight="310.0" prefWidth="296.0">
+                    <columns>
+                      <TableColumn fx:id="clubid" prefWidth="75.0" text="ID" />
+                      <TableColumn fx:id="clubname" prefWidth="75.0" text="NAME" />
+                        <TableColumn fx:id="clubcity" prefWidth="75.0" text="CITY" />
+                        <TableColumn fx:id="clubcosts" prefWidth="75.0" text="COSTS" />
+                    </columns>
+                  </TableView>
+              </content>
+            </ScrollPane>
+         </items>
+      </SplitPane>
+      <Text layoutX="126.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Players">
+         <font>
+            <Font name="Ubuntu Mono Bold" size="13.0" />
+         </font>
+      </Text>
+      <Text layoutX="420.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Clubs">
+         <font>
+            <Font name="Ubuntu Mono Bold" size="13.0" />
+         </font>
+      </Text>
+      <MenuBar layoutX="190.0" layoutY="373.0" AnchorPane.bottomAnchor="0.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="Add">
+            <items>
+              <MenuItem fx:id="addplayer" mnemonicParsing="false" text="Player" />
+                  <MenuItem fx:id="addclub" mnemonicParsing="false" text="Club" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Update">
+            <items>
+              <MenuItem fx:id="updateplayer" mnemonicParsing="false" text=" Update selected player" />
+                  <MenuItem fx:id="updateclub" mnemonicParsing="false" text=" Update selected club" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Delete">
+            <items>
+              <MenuItem fx:id="deleteplayer" mnemonicParsing="false" text="Delete player" />
+                  <MenuItem fx:id="deleteclub" mnemonicParsing="false" text="Delete club" />
+            </items>
+          </Menu>
+            <Menu mnemonicParsing="false" text="Find">
+               <items>
+                  <MenuItem fx:id="findplayer" mnemonicParsing="false" text="Find player by last name" />
+                  <MenuItem fx:id="findclub" mnemonicParsing="false" text="Find club by name" />
+               </items>
+            </Menu>
+        </menus>
+      </MenuBar>
+      <Button fx:id="closedb" layoutX="517.0" layoutY="377.0" mnemonicParsing="false" text="Another DB" textFill="RED">
+         <font>
+            <Font name="Ubuntu Mono" size="11.0" />
+         </font>
+      </Button>
+      <Text fx:id="dbname" layoutX="274.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DBNAME" />
+   </children>
+</AnchorPane>
