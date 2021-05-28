@@ -73,7 +73,7 @@ BEGIN
     UPDATE clubs
     SET salary_costs=(SELECT SUM(salary)
                       FROM players
-                      GROUP BY club_id)
+                      WHERE NEW.club_id = club_id)
     where clubs.id = NEW.club_id;
 END;
 
@@ -85,7 +85,7 @@ BEGIN
     UPDATE clubs
     SET salary_costs=(SELECT SUM(salary)
                       FROM players
-                      GROUP BY club_id)
+                    WHERE NEW.club_id = club_id)
     where clubs.id = NEW.club_id;
 END;
 
@@ -97,7 +97,7 @@ BEGIN
     UPDATE clubs
     SET salary_costs=(SELECT SUM(salary)
                       FROM players
-                      GROUP BY club_id)
+                      WHERE club_id = id)
     where clubs.id = OLD.club_id;
 END;
 ```
