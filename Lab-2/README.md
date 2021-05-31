@@ -108,7 +108,7 @@ END;
 CREATE INDEX IND_last_name ON players (last_name);
 ```
 
-###Приложение
+### Приложение
 
 Окно входа на сервер
 
