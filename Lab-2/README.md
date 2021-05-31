@@ -157,7 +157,7 @@ CREATE INDEX IND_last_name ON players (last_name);
 
 Игрок обновлен
 
-![updated player](https://github.com/VadMack/DB-labs/blob/main/Lab-2/screenshots/updated%20player.jpeg?raw=true)
+![updated player](https://github.com/VadMack/DB-labs/blob/main/Lab-2/screenshots/updated%20player.jpg?raw=true)
 
 
 Окно обновления клуба
