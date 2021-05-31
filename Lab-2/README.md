@@ -108,5 +108,10 @@ END;
 CREATE INDEX IND_last_name ON players (last_name);
 ```
 
+###Приложение
+
+Окно входа на сервер
+!(https://github.com/VadMack/DB-labs/blob/main/Lab-2/screenshots/login.jpeg?raw=true)
+
 
 
