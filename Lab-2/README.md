@@ -111,7 +111,100 @@ CREATE INDEX IND_last_name ON players (last_name);
 ###Приложение
 
 Окно входа на сервер
+
 ![login](https://github.com/VadMack/DB-labs/blob/main/Lab-2/screenshots/login.jpeg?raw=true)
 
 
+Окно выбора базы данных с возможностью удалять и создавать новые
 
+![select-create-delete-database](https://github.com/VadMack/DB-labs/blob/main/Lab-2/screenshots/select-create-delete-database.jpeg?raw=true)
+
+
+Новая база данных создана
+
+![new db created](https://github.com/VadMack/DB-labs/blob/main/Lab-2/screenshots/new%20db%20created.jpeg?raw=true)
+
+
+Основное окно с базой данных
+
+![main window with db](https://github.com/VadMack/DB-labs/blob/main/Lab-2/screenshots/main%20window%20with%20db.jpeg?raw=true)
+
+
+Окно создания клуба
+
+![create club](https://github.com/VadMack/DB-labs/blob/main/Lab-2/screenshots/create%20club.jpeg?raw=true)
+
+
+Клуб создан
+
+![created club](https://github.com/VadMack/DB-labs/blob/main/Lab-2/screenshots/created%20club.jpeg?raw=true)
+
+
+Окно создания игрока
+
+![create player](https://github.com/VadMack/DB-labs/blob/main/Lab-2/screenshots/create%20player.jpeg?raw=true)
+
+
+Игрок создан
+
+![created player](https://github.com/VadMack/DB-labs/blob/main/Lab-2/screenshots/created%20player.jpeg?raw=true)
+
+
+Окно обновления игрока
+
+![update player](https://github.com/VadMack/DB-labs/blob/main/Lab-2/screenshots/update%20player.jpeg?raw=true)
+
+
+Игрок обновлен
+
+![updated player](https://github.com/VadMack/DB-labs/blob/main/Lab-2/screenshots/updated%20player.jpeg?raw=true)
+
+
+Окно обновления клуба
+
+![update club](https://github.com/VadMack/DB-labs/blob/main/Lab-2/screenshots/update%20club.jpeg?raw=true)
+
+
+Клуб обновлен
+
+![updated club](https://github.com/VadMack/DB-labs/blob/main/Lab-2/screenshots/updated%20club.jpeg?raw=true)
+
+
+Окно удаления игрока
+
+![remove player](https://github.com/VadMack/DB-labs/blob/main/Lab-2/screenshots/remove%20player.jpeg?raw=true)
+
+
+Игрок удален
+
+![removed player](https://github.com/VadMack/DB-labs/blob/main/Lab-2/screenshots/removed%20player.jpeg?raw=true)
+
+
+Окно поиска игрока
+
+![find player](https://github.com/VadMack/DB-labs/blob/main/Lab-2/screenshots/find%20player.jpeg?raw=true)
+
+
+Игрок найден
+
+![found player](https://github.com/VadMack/DB-labs/blob/main/Lab-2/screenshots/found%20player.jpeg?raw=true)
+
+
+Окно поиска клуба
+
+![find club](https://github.com/VadMack/DB-labs/blob/main/Lab-2/screenshots/find%20club.jpeg?raw=true)
+
+
+Клуб найден
+
+![found club](https://github.com/VadMack/DB-labs/blob/main/Lab-2/screenshots/found%20club.jpeg?raw=true)
+
+
+Окно удаления клуба
+
+![remove player](https://github.com/VadMack/DB-labs/blob/main/Lab-2/screenshots/remove%20club.jpeg?raw=true)
+
+
+Клуб удален
+
+![removed player](https://github.com/VadMack/DB-labs/blob/main/Lab-2/screenshots/removed%20club.jpeg?raw=true)
